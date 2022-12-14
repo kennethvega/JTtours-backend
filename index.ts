@@ -1,16 +1,35 @@
-import express, { Express, Request, Response } from "express";
-const port = 8000;
+import * as dotenv from "dotenv";
+import mongoose from "mongoose";
+import bodyParser from "body-parser";
+import cors from "cors";
+import express, { Request, Response } from "express";
+import errorHandler from "./middleware/errorMiddleware";
+import userRoute from "./routes/userRoute";
 
-const app: Express = express();
+// CONFIGURATIONS & MIDDLEWARE
+dotenv.config();
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: false })); //--> helps handle data via URL
+app.use(bodyParser.json()); //-->converts/parse data to object
+app.use("/api/users", userRoute); // routes middleware
+app.use(errorHandler); // custom error middleware
 
+// ROUTES
 app.get("/", (req: Request, res: Response) => {
-  res.send("HELLO FROM EXPRESS + TS!!!!");
+  res.send("Home Page");
 });
 
-app.get("/hi", (req: Request, res: Response) => {
-  res.send("BYEEE!!");
-});
+// CONNECT TO DB AND START SERVER
+mongoose.set("strictQuery", true);
+const PORT = process.env.PORT || 5000;
+const MONGO = process.env.MONGO_URI as string;
 
-app.listen(port, () => {
-  console.log(`now listening on port ${port}`);
-});
+mongoose
+  .connect(MONGO)
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server Running on port ${PORT}`);
+    });
+  })
+  .catch((err: string) => console.log(err));
