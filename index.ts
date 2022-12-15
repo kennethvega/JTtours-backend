@@ -5,11 +5,13 @@ import cors from "cors";
 import express, { Request, Response } from "express";
 import errorHandler from "./middleware/errorMiddleware";
 import userRoute from "./routes/userRoute";
+import cookieParser from "cookie-parser";
 
 // CONFIGURATIONS & MIDDLEWARE
 dotenv.config();
 const app = express();
 app.use(express.json());
+app.use(cookieParser());// helps send http-only cookie
 app.use(express.urlencoded({ extended: false })); //--> helps handle data via URL
 app.use(bodyParser.json()); //-->converts/parse data to object
 app.use("/api/users", userRoute); // routes middleware
