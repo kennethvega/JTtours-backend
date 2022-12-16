@@ -13,6 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createProduct = void 0;
+const fileUpload_1 = require("./../utils/fileUpload");
+const cloudinary_1 = __importDefault(require("../utils/cloudinary"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const productModel_1 = __importDefault(require("../model/productModel"));
 // CREATE PRODUCT ---------
@@ -27,7 +29,28 @@ exports.createProduct = (0, express_async_handler_1.default)((req, res) => __awa
         res.status(400);
         throw new Error("Please fill in all fields");
     }
-    // manage image upload using multer
+    // Handle Image upload
+    let fileData = {};
+    if (req.file) {
+        // Save image to cloudinary
+        let uploadedFile;
+        try {
+            uploadedFile = yield cloudinary_1.default.uploader.upload(req.file.path, {
+                folder: "JTtours App",
+                resource_type: "image",
+            });
+        }
+        catch (error) {
+            res.status(500);
+            throw new Error("Image could not be uploaded");
+        }
+        fileData = {
+            fileName: req.file.originalname,
+            filePath: uploadedFile.secure_url,
+            fileType: req.file.mimetype,
+            fileSize: (0, fileUpload_1.fileSizeFormatter)(req.file.size, 2),
+        };
+    }
     // create product
     const product = yield productModel_1.default.create({
         city,
@@ -35,6 +58,7 @@ exports.createProduct = (0, express_async_handler_1.default)((req, res) => __awa
         description,
         price,
         date,
+        image: fileData,
     });
     res.status(201).json(product);
 }));

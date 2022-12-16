@@ -26,8 +26,8 @@ function fileFilter(req: any, file: any, cb: any) {
   }
 }
 
-// Export this 2
-export const upload = multer({ storage, fileFilter });
+// Export upload function and file size formatter
+export const upload = multer({ storage, fileFilter }); //use this on productRoute
 // File Size Formatter
 export const fileSizeFormatter = (bytes: number, decimal: number) => {
   if (bytes === 0) {

@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 const productController_1 = require("./../controller/productController");
 const authMiddleware_1 = require("../middleware/authMiddleware");
+const fileUpload_1 = require("../utils/fileUpload");
 // PRODUCT ROUTES
-router.post("/", authMiddleware_1.protect, productController_1.createProduct);
+router.post("/", authMiddleware_1.protect, fileUpload_1.upload.single("image"), productController_1.createProduct);
 exports.default = router;
