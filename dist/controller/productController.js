@@ -27,7 +27,7 @@ exports.createProduct = (0, express_async_handler_1.default)((req, res) => __awa
         res.status(400);
         throw new Error("Please fill in all fields");
     }
-    // manage image upload
+    // manage image upload using multer
     // create product
     const product = yield productModel_1.default.create({
         city,

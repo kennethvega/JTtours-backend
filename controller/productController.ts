@@ -13,7 +13,8 @@ export const createProduct = asyncHandler(async (req: Request | any, res) => {
     res.status(400);
     throw new Error("Please fill in all fields");
   }
-  // manage image upload
+  // manage image upload using multer
+
   // create product
   const product = await Product.create({
     city,
