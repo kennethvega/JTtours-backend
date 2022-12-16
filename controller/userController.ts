@@ -4,7 +4,8 @@ import User from "../model/userModel";
 import jwt from "jsonwebtoken";
 import { ObjectId } from "mongodb";
 import bcrypt from "bcryptjs";
-import { Express, Request, Response } from "express";
+import { Request, Response } from "express";
+
 // GENERATE JWT TOKEN
 const generateToken = (id: ObjectId) => {
   return jwt.sign({ id }, process.env.JWT_SECRET as string, {

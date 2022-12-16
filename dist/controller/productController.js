@@ -17,6 +17,7 @@ const fileUpload_1 = require("./../utils/fileUpload");
 const cloudinary_1 = __importDefault(require("../utils/cloudinary"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const productModel_1 = __importDefault(require("../model/productModel"));
+const unlink_1 = require("../utils/unlink");
 // CREATE PRODUCT ---------
 exports.createProduct = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { city, country, description, price, date } = req.body;
@@ -39,9 +40,12 @@ exports.createProduct = (0, express_async_handler_1.default)((req, res) => __awa
                 folder: "JTtours App",
                 resource_type: "image",
             });
+            // after uploading sucessfully delete photo in upload file
+            yield (0, unlink_1.unlinkFile)(req.file.path);
         }
         catch (error) {
             res.status(500);
+            yield (0, unlink_1.unlinkFile)(req.file.path);
             throw new Error("Image could not be uploaded");
         }
         fileData = {

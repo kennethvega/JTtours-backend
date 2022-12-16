@@ -3,6 +3,7 @@ import cloudinary from "../utils/cloudinary";
 import asyncHandler from "express-async-handler";
 import Product from "../model/productModel";
 import { Request, Response } from "express";
+import { unlinkFile } from "../utils/unlink";
 
 // CREATE PRODUCT ---------
 export const createProduct = asyncHandler(async (req: Request | any, res) => {
@@ -26,8 +27,11 @@ export const createProduct = asyncHandler(async (req: Request | any, res) => {
         folder: "JTtours App",
         resource_type: "image",
       });
+      // after uploading sucessfully delete photo in upload file
+      await unlinkFile(req.file.path);
     } catch (error) {
       res.status(500);
+      await unlinkFile(req.file.path);
       throw new Error("Image could not be uploaded");
     }
 
