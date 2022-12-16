@@ -1,4 +1,5 @@
 import express from "express";
+const router = express.Router();
 import {
   registerUser,
   loginUser,
@@ -9,7 +10,7 @@ import {
   updatePassword
 } from "../controller/userController"; //controller function
 import { protect } from "../middleware/authMiddleware";
-const router = express.Router();
+
 
 // User routes
 router.post("/register", registerUser);

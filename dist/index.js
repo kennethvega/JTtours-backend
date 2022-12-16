@@ -31,8 +31,9 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const express_1 = __importDefault(require("express"));
 const errorMiddleware_1 = __importDefault(require("./middleware/errorMiddleware"));
-const userRoute_1 = __importDefault(require("./routes/userRoute"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const userRoute_1 = __importDefault(require("./routes/userRoute"));
+const productRoute_1 = __importDefault(require("./routes/productRoute"));
 // CONFIGURATIONS & MIDDLEWARE
 dotenv.config();
 const app = (0, express_1.default)();
@@ -40,9 +41,10 @@ app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)()); // helps send http-only cookie
 app.use(express_1.default.urlencoded({ extended: false })); //--> helps handle data via URL
 app.use(body_parser_1.default.json()); //-->converts/parse data to object
-app.use("/api/users", userRoute_1.default); // routes middleware
 app.use(errorMiddleware_1.default); // custom error middleware
-// ROUTES
+// ROUTES MIDDLEWARE
+app.use("/api/users", userRoute_1.default); // user routes
+app.use("/api/products", productRoute_1.default); // product routes
 app.get("/", (req, res) => {
     res.send("Home Page");
 });
