@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createProduct = void 0;
+exports.getAllProducts = exports.createProduct = void 0;
 const fileUpload_1 = require("./../utils/fileUpload");
 const cloudinary_1 = __importDefault(require("../utils/cloudinary"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
@@ -65,4 +65,10 @@ exports.createProduct = (0, express_async_handler_1.default)((req, res) => __awa
         image: fileData,
     });
     res.status(201).json(product);
+}));
+// GET ALL PRODUCTS ---------
+exports.getAllProducts = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // fetch products
+    const products = yield productModel_1.default.find().sort("-createdAt");
+    res.status(200).json(products);
 }));

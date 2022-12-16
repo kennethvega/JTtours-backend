@@ -10,4 +10,5 @@ const authMiddleware_1 = require("../middleware/authMiddleware");
 const fileUpload_1 = require("../utils/fileUpload");
 // PRODUCT ROUTES
 router.post("/", authMiddleware_1.protect, fileUpload_1.upload.single("image"), productController_1.createProduct);
+router.get("/", productController_1.getAllProducts);
 exports.default = router;

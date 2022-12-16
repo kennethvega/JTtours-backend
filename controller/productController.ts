@@ -34,7 +34,6 @@ export const createProduct = asyncHandler(async (req: Request | any, res) => {
       await unlinkFile(req.file.path);
       throw new Error("Image could not be uploaded");
     }
-
     fileData = {
       fileName: req.file.originalname,
       filePath: uploadedFile.secure_url,
@@ -52,4 +51,11 @@ export const createProduct = asyncHandler(async (req: Request | any, res) => {
     image: fileData,
   });
   res.status(201).json(product);
+});
+
+// GET ALL PRODUCTS ---------
+export const getAllProducts = asyncHandler(async (req: Request | any, res) => {
+  // fetch products
+  const products = await Product.find().sort("-createdAt");
+  res.status(200).json(products);
 });
