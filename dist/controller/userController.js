@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUser = exports.logout = exports.loginUser = exports.registerUser = void 0;
+exports.updatePassword = exports.updateUser = exports.loginStatus = exports.getUser = exports.logout = exports.loginUser = exports.registerUser = void 0;
 require("express-async-errors");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const userModel_1 = __importDefault(require("../model/userModel"));
@@ -122,9 +122,79 @@ exports.logout = (0, express_async_handler_1.default)((req, res) => __awaiter(vo
         sameSite: "none",
         secure: true,
     });
-    res.status(200).json({ message: "Successfully Logged Out" });
+    return res.status(200).json({ message: "Successfully Logged Out" });
 }));
 // GET USER DATA -------
 exports.getUser = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send("get user data");
+    const user = yield userModel_1.default.findById(req.user._id);
+    if (user) {
+        const { _id, name, email } = user;
+        res.status(200).json({
+            _id,
+            name,
+            email,
+        });
+    }
+    else {
+        res.status(400);
+        throw new Error("User Not Found");
+    }
+}));
+// GET LOGGED IN STATUS --------
+exports.loginStatus = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = req.cookies.token;
+    if (!token) {
+        return res.json(false);
+    }
+    // Verify Token
+    const verified = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
+    if (verified) {
+        return res.json(true);
+    }
+    return res.json(false);
+}));
+// UPDATE NAME---------
+exports.updateUser = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield userModel_1.default.findById(req.user._id); //access to req.user because of protected route/authMiddleware
+    if (user) {
+        const { name, email } = user;
+        user.email = email;
+        user.name = req.body.name || name;
+        const updatedUser = yield user.save();
+        res.status(200).json({
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+        });
+    }
+    else {
+        res.status(404);
+        throw new Error("User not found");
+    }
+}));
+// UPDATE PASSWORD -------
+exports.updatePassword = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield userModel_1.default.findById(req.user._id); //access to req.user because of protected route/authMiddleware
+    const { oldPassword, newPassword } = req.body;
+    // Validation
+    if (!user) {
+        res.status(400);
+        throw new Error("User not found please login or signup");
+    }
+    if (!oldPassword || !newPassword) {
+        res.status(400);
+        throw new Error("Please add both old and new password");
+    }
+    // Check if old password matches the current password in the DB
+    const passwordIsCorrect = yield bcryptjs_1.default.compare(oldPassword, user.password);
+    // Save new password
+    if (user && passwordIsCorrect) {
+        user.password = newPassword;
+        yield user.save(); //save changes
+        res.status(200).send("Password change successfull");
+    }
+    else {
+        res.status(400);
+        throw new Error("Old password is incorrect");
+    }
 }));
