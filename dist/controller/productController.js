@@ -49,8 +49,9 @@ exports.createProduct = (0, express_async_handler_1.default)((req, res) => __awa
             throw new Error("Image could not be uploaded");
         }
         fileData = {
+            public_id: uploadedFile.public_id,
             fileName: req.file.originalname,
-            filePath: uploadedFile.secure_url,
+            imageURL: uploadedFile.secure_url,
             fileType: req.file.mimetype,
             fileSize: (0, fileUpload_1.fileSizeFormatter)(req.file.size, 2),
         };
@@ -89,6 +90,7 @@ exports.deleteProduct = (0, express_async_handler_1.default)((req, res) => __awa
         res.status(404);
         throw new Error("Product not found.");
     }
-    yield product.remove();
-    res.status(200).json(product);
+    yield cloudinary_1.default.uploader.destroy(product.image.public_id); // delete from cloudinary
+    yield product.remove(); // delete from database
+    res.status(200).json({ message: "Product deleted" });
 }));

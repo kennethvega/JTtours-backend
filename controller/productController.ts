@@ -35,8 +35,9 @@ export const createProduct = asyncHandler(async (req: Request | any, res) => {
       throw new Error("Image could not be uploaded");
     }
     fileData = {
+      public_id: uploadedFile.public_id,
       fileName: req.file.originalname,
-      filePath: uploadedFile.secure_url,
+      imageURL: uploadedFile.secure_url,
       fileType: req.file.mimetype,
       fileSize: fileSizeFormatter(req.file.size, 2),
     };
@@ -78,6 +79,7 @@ export const deleteProduct = asyncHandler(async (req: Request | any, res) => {
     res.status(404);
     throw new Error("Product not found.");
   }
-  await product.remove();
-  res.status(200).json(product);
+  await cloudinary.uploader.destroy(product.image.public_id); // delete from cloudinary
+  await product.remove(); // delete from database
+  res.status(200).json({ message: "Product deleted" });
 });
