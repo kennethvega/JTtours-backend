@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllProducts = exports.createProduct = void 0;
+exports.deleteProduct = exports.getProducts = exports.getAllProducts = exports.createProduct = void 0;
 const fileUpload_1 = require("./../utils/fileUpload");
 const cloudinary_1 = __importDefault(require("../utils/cloudinary"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
@@ -71,4 +71,24 @@ exports.getAllProducts = (0, express_async_handler_1.default)((req, res) => __aw
     // fetch products
     const products = yield productModel_1.default.find().sort("-createdAt");
     res.status(200).json(products);
+}));
+// GET SINGLE PRODUCT -------
+exports.getProducts = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const product = yield productModel_1.default.findById(req.params.id); //get product from url/params id
+    // validation
+    if (!product) {
+        res.status(404);
+        throw new Error("Product not found.");
+    }
+    res.status(200).json(product);
+}));
+// DELETE PRODUCT --------
+exports.deleteProduct = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const product = yield productModel_1.default.findById(req.params.id); //get product from url/params id
+    if (!product) {
+        res.status(404);
+        throw new Error("Product not found.");
+    }
+    yield product.remove();
+    res.status(200).json(product);
 }));

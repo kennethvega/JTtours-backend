@@ -59,3 +59,25 @@ export const getAllProducts = asyncHandler(async (req: Request | any, res) => {
   const products = await Product.find().sort("-createdAt");
   res.status(200).json(products);
 });
+
+// GET SINGLE PRODUCT -------
+export const getProducts = asyncHandler(async (req: Request | any, res) => {
+  const product = await Product.findById(req.params.id); //get product from url/params id
+  // validation
+  if (!product) {
+    res.status(404);
+    throw new Error("Product not found.");
+  }
+  res.status(200).json(product);
+});
+
+// DELETE PRODUCT --------
+export const deleteProduct = asyncHandler(async (req: Request | any, res) => {
+  const product = await Product.findById(req.params.id); //get product from url/params id
+  if (!product) {
+    res.status(404);
+    throw new Error("Product not found.");
+  }
+  await product.remove();
+  res.status(200).json(product);
+});
