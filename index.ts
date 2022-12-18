@@ -8,7 +8,9 @@ import cookieParser from "cookie-parser";
 import userRoute from "./routes/userRoute";
 import productRoute from "./routes/productRoute";
 import bookingRoute from "./routes/bookingRoute";
+import emailListRoute from "./routes/emailListRoute";
 import path from "path";
+
 // CONFIGURATIONS & MIDDLEWARE
 
 const app = express();
@@ -23,6 +25,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // fill up
 app.use("/api/users", userRoute); // user routes.
 app.use("/api/products", productRoute); // product routes
 app.use("/api/booking", bookingRoute); // booking routes
+app.use("/api/email", emailListRoute); // emailList routes
 app.get("/", (req: Request, res: Response) => {
   res.send("Home Page");
 });

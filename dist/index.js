@@ -12,6 +12,7 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const userRoute_1 = __importDefault(require("./routes/userRoute"));
 const productRoute_1 = __importDefault(require("./routes/productRoute"));
 const bookingRoute_1 = __importDefault(require("./routes/bookingRoute"));
+const emailListRoute_1 = __importDefault(require("./routes/emailListRoute"));
 const path_1 = __importDefault(require("path"));
 // CONFIGURATIONS & MIDDLEWARE
 const app = (0, express_1.default)();
@@ -25,6 +26,7 @@ app.use("/uploads", express_1.default.static(path_1.default.join(__dirname, "upl
 app.use("/api/users", userRoute_1.default); // user routes.
 app.use("/api/products", productRoute_1.default); // product routes
 app.use("/api/booking", bookingRoute_1.default); // booking routes
+app.use("/api/email", emailListRoute_1.default); // emailList routes
 app.get("/", (req, res) => {
     res.send("Home Page");
 });
