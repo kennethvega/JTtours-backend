@@ -7,10 +7,9 @@ import {
   getUser,
   loginStatus,
   updateUser,
-  updatePassword
+  updatePassword,
 } from "../controller/userController"; //controller function
 import { protect } from "../middleware/authMiddleware";
-
 
 // User routes
 router.post("/register", registerUser);

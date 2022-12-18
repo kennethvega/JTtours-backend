@@ -13,7 +13,7 @@ const generateToken = (id: ObjectId) => {
   });
 };
 
-// REGISTER A USER ------------
+// REGISTER A USER ----------
 export const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
   //VALIDATION

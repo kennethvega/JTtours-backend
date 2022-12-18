@@ -7,6 +7,7 @@ import errorHandler from "./middleware/errorMiddleware";
 import cookieParser from "cookie-parser";
 import userRoute from "./routes/userRoute";
 import productRoute from "./routes/productRoute";
+import bookingRoute from "./routes/bookingRoute";
 import path from "path";
 // CONFIGURATIONS & MIDDLEWARE
 
@@ -19,8 +20,9 @@ app.use(errorHandler); // custom error middleware
 app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // fill upload util is going to point in uploads folder
 
 // ROUTES MIDDLEWARE
-app.use("/api/users", userRoute); // user routes
+app.use("/api/users", userRoute); // user routes.
 app.use("/api/products", productRoute); // product routes
+app.use("/api/booking", bookingRoute); // booking routes
 app.get("/", (req: Request, res: Response) => {
   res.send("Home Page");
 });

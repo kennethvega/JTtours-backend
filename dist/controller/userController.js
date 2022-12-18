@@ -24,7 +24,7 @@ const generateToken = (id) => {
         expiresIn: "1d",
     });
 };
-// REGISTER A USER ------------
+// REGISTER A USER ----------
 exports.registerUser = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, password } = req.body;
     //VALIDATION
