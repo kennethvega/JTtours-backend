@@ -69,7 +69,7 @@ export const updateBooking = asyncHandler(async (req: Request | any, res) => {
     res.status(404);
     throw new Error("Booking not found.");
   }
-  // update product
+  // update booking status
   const updateStatus = await Booking.findByIdAndUpdate(
     { _id: id },
     {
@@ -80,4 +80,15 @@ export const updateBooking = asyncHandler(async (req: Request | any, res) => {
     }
   );
   res.status(200).json(updateStatus);
+});
+
+// DELETE BOOKING --------------
+export const deleteBooking = asyncHandler(async (req: Request | any, res) => {
+  const booking = await Booking.findById(req.params.id); //get product from url/params id
+  if (!booking) {
+    res.status(404);
+    throw new Error("Booking not found.");
+  }
+  await booking.remove(); // delete from database
+  res.status(200).json({ message: "Booking deleted" });
 });

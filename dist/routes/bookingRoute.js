@@ -12,4 +12,5 @@ router.post("/", bookingController_1.createBooking);
 router.get("/", bookingController_1.getAllBookings);
 router.get("/:id", bookingController_1.getBooking);
 router.patch("/:id", authMiddleware_1.protect, bookingController_1.updateBooking);
+router.delete("/:id", authMiddleware_1.protect, bookingController_1.deleteBooking);
 exports.default = router;

@@ -3,6 +3,7 @@ import {
   createBooking,
   getBooking,
   updateBooking,
+  deleteBooking,
 } from "./../controller/bookingController";
 
 import express from "express";
@@ -14,4 +15,5 @@ router.post("/", createBooking);
 router.get("/", getAllBookings);
 router.get("/:id", getBooking);
 router.patch("/:id", protect, updateBooking);
+router.delete("/:id", protect, deleteBooking);
 export default router;

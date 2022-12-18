@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateBooking = exports.getBooking = exports.getAllBookings = exports.createBooking = void 0;
+exports.deleteBooking = exports.updateBooking = exports.getBooking = exports.getAllBookings = exports.createBooking = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const bookingModel_1 = __importDefault(require("../model/bookingModel"));
 // CREATE A BOOKING -------
@@ -68,11 +68,21 @@ exports.updateBooking = (0, express_async_handler_1.default)((req, res) => __awa
         res.status(404);
         throw new Error("Booking not found.");
     }
-    // update product
+    // update booking status
     const updateStatus = yield bookingModel_1.default.findByIdAndUpdate({ _id: id }, {
         status,
     }, {
         new: true,
     });
     res.status(200).json(updateStatus);
+}));
+// DELETE BOOKING --------------
+exports.deleteBooking = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const booking = yield bookingModel_1.default.findById(req.params.id); //get product from url/params id
+    if (!booking) {
+        res.status(404);
+        throw new Error("Booking not found.");
+    }
+    yield booking.remove(); // delete from database
+    res.status(200).json({ message: "Booking deleted" });
 }));
