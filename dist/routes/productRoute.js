@@ -10,6 +10,7 @@ const authMiddleware_1 = require("../middleware/authMiddleware");
 const fileUpload_1 = require("../utils/fileUpload");
 // PRODUCT ROUTES
 router.post("/", authMiddleware_1.protect, fileUpload_1.upload.single("image"), productController_1.createProduct);
+router.patch("/:id", authMiddleware_1.protect, fileUpload_1.upload.single("image"), productController_1.updateProduct);
 router.get("/", productController_1.getAllProducts);
 router.get("/:id", productController_1.getProducts);
 router.delete("/:id", authMiddleware_1.protect, productController_1.deleteProduct);

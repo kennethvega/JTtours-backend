@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProduct = exports.getProducts = exports.getAllProducts = exports.createProduct = void 0;
+exports.updateProduct = exports.deleteProduct = exports.getProducts = exports.getAllProducts = exports.createProduct = void 0;
 const fileUpload_1 = require("./../utils/fileUpload");
 const cloudinary_1 = __importDefault(require("../utils/cloudinary"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
@@ -40,7 +40,7 @@ exports.createProduct = (0, express_async_handler_1.default)((req, res) => __awa
                 folder: "JTtours App",
                 resource_type: "image",
             });
-            // after uploading sucessfully delete photo in upload file
+            // after uploading successfully delete photo in upload file
             yield (0, unlink_1.unlinkFile)(req.file.path);
         }
         catch (error) {
@@ -93,4 +93,60 @@ exports.deleteProduct = (0, express_async_handler_1.default)((req, res) => __awa
     yield cloudinary_1.default.uploader.destroy(product.image.public_id); // delete from cloudinary
     yield product.remove(); // delete from database
     res.status(200).json({ message: "Product deleted" });
+}));
+// UPDATE PRODUCT ---------
+exports.updateProduct = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { city, country, description, price, date } = req.body;
+    const { id } = req.params;
+    const product = yield productModel_1.default.findById(id);
+    // validation
+    if (!product) {
+        res.status(404);
+        throw new Error("Product not found.");
+    }
+    // Handle Image upload
+    let fileData = {};
+    if (req.file.originalname !== product.image.fileName) {
+        // Save image to cloudinary
+        let uploadedFile;
+        try {
+            // delete old image in cloudinary
+            yield cloudinary_1.default.uploader.destroy(product.image.public_id);
+            //then upload new image
+            uploadedFile = yield cloudinary_1.default.uploader.upload(req.file.path, {
+                folder: "JTtours App",
+                resource_type: "image",
+            });
+            // after uploading sucessfully delete photo in upload file
+            yield (0, unlink_1.unlinkFile)(req.file.path);
+        }
+        catch (error) {
+            res.status(500);
+            yield (0, unlink_1.unlinkFile)(req.file.path);
+            throw new Error("Image could not be uploaded");
+        }
+        fileData = {
+            public_id: uploadedFile.public_id,
+            fileName: req.file.originalname,
+            imageURL: uploadedFile.secure_url,
+            fileType: req.file.mimetype,
+            fileSize: (0, fileUpload_1.fileSizeFormatter)(req.file.size, 2),
+        };
+    }
+    else {
+        yield (0, unlink_1.unlinkFile)(req.file.path); // just delete content in uploads folder
+    }
+    // update product
+    const updatedProduct = yield productModel_1.default.findByIdAndUpdate({ _id: id }, {
+        city,
+        country,
+        description,
+        price,
+        date,
+        image: Object.keys(fileData).length === 0 ? product.image : fileData,
+    }, {
+        new: true,
+        runValidators: true,
+    });
+    res.status(200).json(updatedProduct);
 }));
