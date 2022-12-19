@@ -14,6 +14,7 @@ const productRoute_1 = __importDefault(require("./routes/productRoute"));
 const bookingRoute_1 = __importDefault(require("./routes/bookingRoute"));
 const emailListRoute_1 = __importDefault(require("./routes/emailListRoute"));
 const faqRoute_1 = __importDefault(require("./routes/faqRoute"));
+const testimonialRoute_1 = __importDefault(require("./routes/testimonialRoute"));
 const path_1 = __importDefault(require("path"));
 // CONFIGURATIONS & MIDDLEWARE
 const app = (0, express_1.default)();
@@ -29,6 +30,7 @@ app.use("/api/products", productRoute_1.default); // product routes
 app.use("/api/booking", bookingRoute_1.default); // booking routes
 app.use("/api/email", emailListRoute_1.default); // emailList routes
 app.use("/api/faq", faqRoute_1.default); //frequently asked question routes
+app.use("/api/testimonial", testimonialRoute_1.default); // testimonial
 app.get("/", (req, res) => {
     res.send("Home Page");
 });
