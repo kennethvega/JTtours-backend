@@ -1,7 +1,7 @@
 require("dotenv").config();
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
-import cors from "cors";
+const cors = require("cors");
 import express, { Request, Response } from "express";
 import errorHandler from "./middleware/errorMiddleware";
 import cookieParser from "cookie-parser";
@@ -22,7 +22,12 @@ app.use(express.urlencoded({ extended: false })); //--> helps handle data via UR
 app.use(bodyParser.json()); //-->converts/parse data to object
 app.use(errorHandler); // custom error middleware
 app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // fill upload util is going to point in uploads folder
-
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://www.google.com/"],
+    credentials: true,
+  })
+);
 // ROUTES MIDDLEWARE
 app.use("/api/users", userRoute); // user routes.
 app.use("/api/products", productRoute); // product routes
@@ -30,6 +35,7 @@ app.use("/api/booking", bookingRoute); // booking routes
 app.use("/api/email", emailListRoute); // emailList routes
 app.use("/api/faq", faqRoute); //frequently asked question routes
 app.use("/api/testimonial", testimonialRoute); // testimonial
+
 app.get("/", (req: Request, res: Response) => {
   res.send("Home Page");
 });
