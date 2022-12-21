@@ -24,7 +24,7 @@ app.use(errorHandler); // custom error middleware
 app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // fill upload util is going to point in uploads folder
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://www.google.com/"],
+    origin: ["http://localhost:5173", "https://jttours&travels.com/"],
     credentials: true,
   })
 );

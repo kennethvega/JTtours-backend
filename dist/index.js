@@ -26,7 +26,7 @@ app.use(body_parser_1.default.json()); //-->converts/parse data to object
 app.use(errorMiddleware_1.default); // custom error middleware
 app.use("/uploads", express_1.default.static(path_1.default.join(__dirname, "uploads"))); // fill upload util is going to point in uploads folder
 app.use(cors({
-    origin: ["http://localhost:5173", "https://www.google.com/"],
+    origin: ["http://localhost:5173", "https://jttours&travels.com/"],
     credentials: true,
 }));
 // ROUTES MIDDLEWARE.
