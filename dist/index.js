@@ -29,7 +29,7 @@ app.use(cors({
     origin: ["http://localhost:5173", "https://www.google.com/"],
     credentials: true,
 }));
-// ROUTES MIDDLEWARE
+// ROUTES MIDDLEWARE.
 app.use("/api/users", userRoute_1.default); // user routes.
 app.use("/api/products", productRoute_1.default); // product routes
 app.use("/api/booking", bookingRoute_1.default); // booking routes

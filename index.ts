@@ -28,7 +28,7 @@ app.use(
     credentials: true,
   })
 );
-// ROUTES MIDDLEWARE
+// ROUTES MIDDLEWARE.
 app.use("/api/users", userRoute); // user routes.
 app.use("/api/products", productRoute); // product routes
 app.use("/api/booking", bookingRoute); // booking routes
