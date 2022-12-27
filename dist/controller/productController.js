@@ -96,6 +96,7 @@ exports.deleteProduct = (0, express_async_handler_1.default)((req, res) => __awa
 }));
 // UPDATE PRODUCT ---------
 exports.updateProduct = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const { city, country, description, price, date } = req.body;
     const { id } = req.params;
     const product = yield productModel_1.default.findById(id);
@@ -106,35 +107,34 @@ exports.updateProduct = (0, express_async_handler_1.default)((req, res) => __awa
     }
     // Handle Image upload
     let fileData = {};
-    if (req.file.originalname !== product.image.fileName) {
-        // Save image to cloudinary
-        let uploadedFile;
-        try {
-            // delete old image in cloudinary
-            yield cloudinary_1.default.uploader.destroy(product.image.public_id);
-            //then upload new image
-            uploadedFile = yield cloudinary_1.default.uploader.upload(req.file.path, {
-                folder: "JTtours App",
-                resource_type: "image",
-            });
-            // after uploading sucessfully delete photo in upload file
-            yield (0, unlink_1.unlinkFile)(req.file.path);
+    if (req.file) {
+        if (((_a = req === null || req === void 0 ? void 0 : req.file) === null || _a === void 0 ? void 0 : _a.originalname) !== product.image.fileName) {
+            // Save image to cloudinary
+            let uploadedFile;
+            try {
+                // delete old image in cloudinary
+                yield cloudinary_1.default.uploader.destroy(product.image.public_id);
+                //then upload new image
+                uploadedFile = yield cloudinary_1.default.uploader.upload(req.file.path, {
+                    folder: "JTtours App",
+                    resource_type: "image",
+                });
+                // after uploading sucessfully delete photo in upload file
+                yield (0, unlink_1.unlinkFile)(req.file.path);
+            }
+            catch (error) {
+                res.status(500);
+                yield (0, unlink_1.unlinkFile)(req.file.path);
+                throw new Error("Image could not be uploaded");
+            }
+            fileData = {
+                public_id: uploadedFile.public_id,
+                fileName: req.file.originalname,
+                imageURL: uploadedFile.secure_url,
+                fileType: req.file.mimetype,
+                fileSize: (0, fileUpload_1.fileSizeFormatter)(req.file.size, 2),
+            };
         }
-        catch (error) {
-            res.status(500);
-            yield (0, unlink_1.unlinkFile)(req.file.path);
-            throw new Error("Image could not be uploaded");
-        }
-        fileData = {
-            public_id: uploadedFile.public_id,
-            fileName: req.file.originalname,
-            imageURL: uploadedFile.secure_url,
-            fileType: req.file.mimetype,
-            fileSize: (0, fileUpload_1.fileSizeFormatter)(req.file.size, 2),
-        };
-    }
-    else {
-        yield (0, unlink_1.unlinkFile)(req.file.path); // just delete content in uploads folder
     }
     // update product
     const updatedProduct = yield productModel_1.default.findByIdAndUpdate({ _id: id }, {

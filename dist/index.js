@@ -13,7 +13,6 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const userRoute_1 = __importDefault(require("./routes/userRoute"));
 const productRoute_1 = __importDefault(require("./routes/productRoute"));
 const bookingRoute_1 = __importDefault(require("./routes/bookingRoute"));
-const emailListRoute_1 = __importDefault(require("./routes/emailListRoute"));
 const faqRoute_1 = __importDefault(require("./routes/faqRoute"));
 const testimonialRoute_1 = __importDefault(require("./routes/testimonialRoute"));
 const path_1 = __importDefault(require("path"));
@@ -33,7 +32,6 @@ app.use(cors({
 app.use("/api/users", userRoute_1.default); // user routes.
 app.use("/api/products", productRoute_1.default); // product routes
 app.use("/api/booking", bookingRoute_1.default); // booking routes
-app.use("/api/email", emailListRoute_1.default); // emailList routes
 app.use("/api/faq", faqRoute_1.default); //frequently asked question routes
 app.use("/api/testimonial", testimonialRoute_1.default); // testimonial
 app.get("/", (req, res) => {

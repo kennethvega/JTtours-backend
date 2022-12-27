@@ -96,35 +96,37 @@ export const updateProduct = asyncHandler(async (req: Request | any, res) => {
   }
   // Handle Image upload
   let fileData = {};
-  if (req.file.originalname !== product.image.fileName) {
-    // Save image to cloudinary
-    let uploadedFile;
-    try {
-      // delete old image in cloudinary
-      await cloudinary.uploader.destroy(product.image.public_id);
-      //then upload new image
-      uploadedFile = await cloudinary.uploader.upload(req.file.path, {
-        folder: "JTtours App",
-        resource_type: "image",
-      });
-      // after uploading sucessfully delete photo in upload file
-      await unlinkFile(req.file.path);
-    } catch (error) {
-      res.status(500);
-      await unlinkFile(req.file.path);
-      throw new Error("Image could not be uploaded");
+  if (req.file) {
+    if (req?.file?.originalname !== product.image.fileName) {
+      // Save image to cloudinary
+      let uploadedFile;
+      try {
+        // delete old image in cloudinary
+        await cloudinary.uploader.destroy(product.image.public_id);
+        //then upload new image
+        uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+          folder: "JTtours App",
+          resource_type: "image",
+        });
+        // after uploading sucessfully delete photo in upload file
+        await unlinkFile(req.file.path);
+      } catch (error) {
+        res.status(500);
+        await unlinkFile(req.file.path);
+        throw new Error("Image could not be uploaded");
+      }
+      fileData = {
+        public_id: uploadedFile.public_id, //refer to public_id when deleting image in cloudinary
+        fileName: req.file.originalname,
+        imageURL: uploadedFile.secure_url,
+        fileType: req.file.mimetype,
+        fileSize: fileSizeFormatter(req.file.size, 2),
+      };
     }
-    fileData = {
-      public_id: uploadedFile.public_id, //refer to public_id when deleting image in cloudinary
-      fileName: req.file.originalname,
-      imageURL: uploadedFile.secure_url,
-      fileType: req.file.mimetype,
-      fileSize: fileSizeFormatter(req.file.size, 2),
-    };
-  } else {
-    await unlinkFile(req.file.path); // just delete content in uploads folder
   }
+
   // update product
+
   const updatedProduct = await Product.findByIdAndUpdate(
     { _id: id },
     {
