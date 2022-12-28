@@ -11,5 +11,6 @@ const router = express_1.default.Router();
 router.post("/", authMiddleware_1.protect, fileUpload_1.upload.single("image"), testimonialController_1.createTestimonial);
 router.patch("/:id", authMiddleware_1.protect, fileUpload_1.upload.single("image"), testimonialController_1.updateTestimonial);
 router.get("/", testimonialController_1.getAllTestimonial);
+router.get("/:id", authMiddleware_1.protect, testimonialController_1.getTestimonial);
 router.delete("/:id", authMiddleware_1.protect, testimonialController_1.deleteTestimonial);
 exports.default = router;
