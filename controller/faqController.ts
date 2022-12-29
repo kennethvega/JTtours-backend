@@ -59,3 +59,14 @@ export const deleteFaq = asyncHandler(async (req: Request | any, res) => {
   await faq.remove(); // delete from database
   res.status(200).json({ message: "Faq deleted" });
 });
+
+// GET SINGLE FAQ -------
+export const getFaq = asyncHandler(async (req: Request | any, res) => {
+  const faq = await Faq.findById(req.params.id);
+  // validation
+  if (!faq) {
+    res.status(404);
+    throw new Error("FAQ not found.");
+  }
+  res.status(200).json(faq);
+});

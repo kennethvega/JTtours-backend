@@ -11,5 +11,6 @@ const authMiddleware_1 = require("../middleware/authMiddleware");
 router.post("/", authMiddleware_1.protect, faqController_1.createFaq);
 router.get("/", faqController_1.getAllFaq);
 router.patch("/:id", authMiddleware_1.protect, faqController_1.updateFaq);
+router.get('/:id', authMiddleware_1.protect, faqController_1.getFaq);
 router.delete("/:id", authMiddleware_1.protect, faqController_1.deleteFaq);
 exports.default = router;
