@@ -19,10 +19,7 @@ const path_1 = __importDefault(require("path"));
 // CONFIGURATIONS & MIDDLEWARE
 const app = (0, express_1.default)();
 app.use(cors({
-    origin: [
-        "https://jt-tours-travels-admin.web.app/",
-        "http://localhost:5173",
-    ],
+    origin: ["https://jt-tours-travels-admin.web.app", "http://localhost:5173"],
     credentials: true,
 }));
 app.use(express_1.default.json());
