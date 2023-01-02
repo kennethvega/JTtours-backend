@@ -18,16 +18,20 @@ const testimonialRoute_1 = __importDefault(require("./routes/testimonialRoute"))
 const path_1 = __importDefault(require("path"));
 // CONFIGURATIONS & MIDDLEWARE
 const app = (0, express_1.default)();
+app.use(cors({
+    origin: [
+        "https://jt-tours-travels-admin.web.app/",
+        "http://localhost:5173",
+    ],
+    credentials: true,
+}));
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)()); // helps send http-only cookie
 app.use(express_1.default.urlencoded({ extended: false })); //--> helps handle data via URL
 app.use(body_parser_1.default.json()); //-->converts/parse data to object
 app.use(errorMiddleware_1.default); // custom error middleware
 app.use("/uploads", express_1.default.static(path_1.default.join(__dirname, "uploads"))); // fill upload util is going to point in uploads folder
-app.use(cors({
-    origin: ["http://localhost:5173", "https://jttours&travels.com/"],
-    credentials: true,
-}));
+app.options("*", cors());
 // ROUTES MIDDLEWARE.
 app.use("/api/users", userRoute_1.default); // user routes.
 app.use("/api/products", productRoute_1.default); // product routes

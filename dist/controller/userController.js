@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePassword = exports.updateUser = exports.loginStatus = exports.getUser = exports.logout = exports.loginUser = exports.registerUser = void 0;
+exports.updatePassword = exports.loginStatus = exports.getUser = exports.logout = exports.loginUser = exports.registerUser = void 0;
 require("express-async-errors");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const userModel_1 = __importDefault(require("../model/userModel"));
@@ -90,14 +90,16 @@ exports.loginUser = (0, express_async_handler_1.default)((req, res) => __awaiter
     const correctPassword = yield bcryptjs_1.default.compare(password, user.password);
     // generate token
     const token = generateToken(user._id);
-    // Send HTTP-only cookie
-    res.cookie("token", token, {
-        path: "/",
-        httpOnly: true,
-        expires: new Date(Date.now() + 1000 * 86400),
-        sameSite: "none",
-        secure: true,
-    });
+    if (correctPassword) {
+        // Send HTTP-only cookie
+        res.cookie("token", token, {
+            path: "/",
+            httpOnly: true,
+            expires: new Date(Date.now() + 1000 * 86400),
+            sameSite: "none",
+            secure: true,
+        });
+    }
     // send a respond
     if (user && correctPassword) {
         const { _id, name, admin } = user;
@@ -148,29 +150,12 @@ exports.loginStatus = (0, express_async_handler_1.default)((req, res) => __await
     }
     // Verify Token
     const verified = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
+    console.log(verified);
+    console.log(token);
     if (verified) {
         return res.json(true);
     }
     return res.json(false);
-}));
-// UPDATE NAME---------
-exports.updateUser = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield userModel_1.default.findById(req.user._id); //access to req.user because of protected route/authMiddleware
-    if (user) {
-        const { name, email } = user;
-        user.email = email;
-        user.name = req.body.name || name;
-        const updatedUser = yield user.save();
-        res.status(200).json({
-            _id: updatedUser._id,
-            name: updatedUser.name,
-            email: updatedUser.email,
-        });
-    }
-    else {
-        res.status(404);
-        throw new Error("User not found");
-    }
 }));
 // UPDATE PASSWORD -------
 exports.updatePassword = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {

@@ -13,6 +13,5 @@ router.post("/login", userController_1.loginUser);
 router.get("/logout", userController_1.logout);
 router.get("/getuser", authMiddleware_1.protect, userController_1.getUser);
 router.get("/loggedin", userController_1.loginStatus);
-router.patch("/updateuser", authMiddleware_1.protect, userController_1.updateUser);
 router.patch("/updatepassword", authMiddleware_1.protect, userController_1.updatePassword);
 exports.default = router;

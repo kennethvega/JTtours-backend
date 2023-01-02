@@ -13,20 +13,25 @@ import testimonialRoute from "./routes/testimonialRoute";
 import path from "path";
 
 // CONFIGURATIONS & MIDDLEWARE
-
 const app = express();
+app.use(
+  cors({
+    origin: [
+      "https://jt-tours-travels-admin.web.app/",
+      "http://localhost:5173",
+    ],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(cookieParser()); // helps send http-only cookie
 app.use(express.urlencoded({ extended: false })); //--> helps handle data via URL
 app.use(bodyParser.json()); //-->converts/parse data to object
 app.use(errorHandler); // custom error middleware
 app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // fill upload util is going to point in uploads folder
-app.use(
-  cors({
-    origin: ["http://localhost:5173", "https://jttours&travels.com/"],
-    credentials: true,
-  })
-);
+app.options("*", cors());
+
 // ROUTES MIDDLEWARE.
 app.use("/api/users", userRoute); // user routes.
 app.use("/api/products", productRoute); // product routes

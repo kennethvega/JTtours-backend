@@ -8,12 +8,12 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const faqSchema = new mongoose_1.default.Schema({
     question: {
         type: String,
-        required: [true, "Please add your email"],
+        required: [true, "Please add a question"],
         trim: true,
     },
     answer: {
         type: String,
-        required: [true, "Please add your email"],
+        required: [true, "Please add your an answer"],
         trim: true,
     },
 }, {

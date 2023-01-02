@@ -5,12 +5,12 @@ const faqSchema = new mongoose.Schema(
   {
     question: {
       type: String,
-      required: [true, "Please add your email"],
+      required: [true, "Please add a question"],
       trim: true,
     },
     answer: {
       type: String,
-      required: [true, "Please add your email"],
+      required: [true, "Please add your an answer"],
       trim: true,
     },
   },

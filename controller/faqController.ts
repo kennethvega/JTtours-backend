@@ -13,6 +13,7 @@ export const createFaq = asyncHandler(async (req: Request | any, res) => {
   const faq = await Faq.create({ question, answer });
   res.status(201).json(faq);
 });
+
 // GET ALL FAQ'S -------
 export const getAllFaq = asyncHandler(async (req, res) => {
   // fetch all emails

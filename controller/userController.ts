@@ -81,14 +81,16 @@ export const loginUser = asyncHandler(async (req, res) => {
   const correctPassword = await bcrypt.compare(password, user.password);
   // generate token
   const token = generateToken(user._id);
-  // Send HTTP-only cookie
-  res.cookie("token", token, {
-    path: "/",
-    httpOnly: true,
-    expires: new Date(Date.now() + 1000 * 86400), // 1 day
-    sameSite: "none",
-    secure: true,
-  });
+  if (correctPassword) {
+    // Send HTTP-only cookie
+    res.cookie("token", token, {
+      path: "/",
+      httpOnly: true,
+      expires: new Date(Date.now() + 1000 * 86400), // 1 day
+      sameSite: "none",
+      secure: true,
+    });
+  }
   // send a respond
   if (user && correctPassword) {
     const { _id, name, admin } = user;
@@ -143,32 +145,12 @@ export const loginStatus = asyncHandler(
     }
     // Verify Token
     const verified = jwt.verify(token, process.env.JWT_SECRET as string);
+    console.log(verified);
+    console.log(token);
     if (verified) {
       return res.json(true);
     }
     return res.json(false);
-  }
-);
-
-// UPDATE NAME---------
-export const updateUser = asyncHandler(
-  async (req: Request | any, res: Response) => {
-    const user = await User.findById(req.user._id); //access to req.user because of protected route/authMiddleware
-    if (user) {
-      const { name, email } = user;
-      user.email = email;
-      user.name = req.body.name || name;
-
-      const updatedUser = await user.save();
-      res.status(200).json({
-        _id: updatedUser._id,
-        name: updatedUser.name,
-        email: updatedUser.email,
-      });
-    } else {
-      res.status(404);
-      throw new Error("User not found");
-    }
   }
 );
 
