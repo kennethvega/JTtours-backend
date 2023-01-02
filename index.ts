@@ -16,7 +16,10 @@ import path from "path";
 const app = express();
 app.use(
   cors({
-    origin: ["https://jt-tours-travels-admin.web.app", "http://localhost:5173"],
+    origin: [
+      "https://jt-toursandtravels-admin.web.app",
+      "http://localhost:5173",
+    ],
     credentials: true,
   })
 );
