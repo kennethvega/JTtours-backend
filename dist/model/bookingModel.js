@@ -29,6 +29,7 @@ const bookingSchema = new mongoose_1.default.Schema({
     status: {
         type: Boolean,
         default: false,
+        required: false,
     },
     adultCount: {
         type: String,
@@ -37,6 +38,7 @@ const bookingSchema = new mongoose_1.default.Schema({
     childCount: {
         type: String,
         default: "",
+        required: false,
     },
     numberOfRooms: {
         type: String,

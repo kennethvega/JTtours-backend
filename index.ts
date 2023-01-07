@@ -14,6 +14,12 @@ import path from "path";
 
 // CONFIGURATIONS & MIDDLEWARE
 const app = express();
+app.use(express.json());
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(bodyParser.json()); //-->converts/parse data to object
+
 app.use(
   cors({
     origin: [
@@ -24,13 +30,11 @@ app.use(
   })
 );
 
-app.use(express.json());
 app.use(cookieParser()); // helps send http-only cookie
 app.use(express.urlencoded({ extended: false })); //--> helps handle data via URL
-app.use(bodyParser.json()); //-->converts/parse data to object
 app.use(errorHandler); // custom error middleware
+// app.options("*", cors());
 app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // fill upload util is going to point in uploads folder
-app.options("*", cors());
 
 // ROUTES MIDDLEWARE.
 app.use("/api/users", userRoute); // user routes.

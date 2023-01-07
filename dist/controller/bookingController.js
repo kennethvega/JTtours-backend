@@ -18,15 +18,11 @@ const bookingModel_1 = __importDefault(require("../model/bookingModel"));
 // CREATE A BOOKING -------
 exports.createBooking = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { packageName, customerName, contact, email, adultCount, childCount, tourDate, numberOfRooms, hotel, note, } = req.body;
+    console.log(req.body);
     // validation
-    if (!customerName ||
-        !tourDate ||
-        !contact ||
-        !email ||
-        !adultCount ||
-        !note) {
+    if (!customerName || !contact || !email || !adultCount) {
         res.status(400);
-        throw new Error("Please fill in all required input");
+        throw new Error("Please fill in all fields");
     }
     // create booking
     const booking = yield bookingModel_1.default.create({
