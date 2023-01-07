@@ -30,9 +30,13 @@ const bookingSchema = new mongoose_1.default.Schema({
         type: Boolean,
         default: false,
     },
-    customerCount: {
+    adultCount: {
         type: String,
         required: [true, "Please add number of person"],
+    },
+    childCount: {
+        type: String,
+        default: "",
     },
     numberOfRooms: {
         type: String,

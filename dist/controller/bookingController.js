@@ -17,13 +17,13 @@ const express_async_handler_1 = __importDefault(require("express-async-handler")
 const bookingModel_1 = __importDefault(require("../model/bookingModel"));
 // CREATE A BOOKING -------
 exports.createBooking = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { packageName, customerName, contact, email, customerCount, tourDate, numberOfRooms, hotel, note, } = req.body;
+    const { packageName, customerName, contact, email, adultCount, childCount, tourDate, numberOfRooms, hotel, note, } = req.body;
     // validation
     if (!packageName ||
         !customerName ||
         !contact ||
         !email ||
-        !customerCount ||
+        !adultCount ||
         !tourDate) {
         res.status(400);
         throw new Error("Please fill in all required input");
@@ -34,7 +34,8 @@ exports.createBooking = (0, express_async_handler_1.default)((req, res) => __awa
         customerName,
         contact,
         email,
-        customerCount,
+        adultCount,
+        childCount,
         tourDate,
         numberOfRooms,
         hotel,

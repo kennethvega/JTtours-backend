@@ -8,7 +8,8 @@ export const createBooking = asyncHandler(async (req: Request | any, res) => {
     customerName,
     contact,
     email,
-    customerCount,
+    adultCount,
+    childCount,
     tourDate,
     numberOfRooms,
     hotel,
@@ -20,7 +21,7 @@ export const createBooking = asyncHandler(async (req: Request | any, res) => {
     !customerName ||
     !contact ||
     !email ||
-    !customerCount ||
+    !adultCount ||
     !tourDate
   ) {
     res.status(400);
@@ -32,7 +33,8 @@ export const createBooking = asyncHandler(async (req: Request | any, res) => {
     customerName,
     contact,
     email,
-    customerCount,
+    adultCount,
+    childCount,
     tourDate,
     numberOfRooms,
     hotel,

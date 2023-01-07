@@ -4,11 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.fileSizeFormatter = exports.upload = void 0;
+const fs_1 = __importDefault(require("fs"));
 const multer_1 = __importDefault(require("multer"));
 // Define file storage
 const storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "uploads");
+        const path = `./uploads`;
+        fs_1.default.mkdirSync(path, { recursive: true });
+        cb(null, path);
     },
     filename: function (req, file, cb) {
         cb(null, new Date().toISOString().replace(/:/g, "-") + "-" + file.originalname); // 23/08/2022
