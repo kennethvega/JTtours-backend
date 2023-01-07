@@ -9,8 +9,8 @@ const router = express_1.default.Router();
 const authMiddleware_1 = require("../middleware/authMiddleware");
 // booking routes
 router.post("/", bookingController_1.createBooking);
-router.get("/", bookingController_1.getAllBookings);
-router.get("/:id", bookingController_1.getBooking);
+router.get("/:id", authMiddleware_1.protect, bookingController_1.getBooking);
+router.get("/", authMiddleware_1.protect, bookingController_1.getAllBookings);
 router.patch("/:id", authMiddleware_1.protect, bookingController_1.updateBooking);
 router.delete("/:id", authMiddleware_1.protect, bookingController_1.deleteBooking);
 exports.default = router;

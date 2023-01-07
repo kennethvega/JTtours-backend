@@ -12,8 +12,8 @@ import { protect } from "../middleware/authMiddleware";
 
 // booking routes
 router.post("/", createBooking);
-router.get("/", getAllBookings);
-router.get("/:id", getBooking);
+router.get("/:id", protect, getBooking);
+router.get("/", protect, getAllBookings);
 router.patch("/:id", protect, updateBooking);
 router.delete("/:id", protect, deleteBooking);
 export default router;

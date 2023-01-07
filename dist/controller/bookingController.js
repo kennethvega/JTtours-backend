@@ -24,7 +24,8 @@ exports.createBooking = (0, express_async_handler_1.default)((req, res) => __awa
         !contact ||
         !email ||
         !adultCount ||
-        !tourDate) {
+        !tourDate ||
+        !note) {
         res.status(400);
         throw new Error("Please fill in all required input");
     }

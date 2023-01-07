@@ -22,7 +22,8 @@ export const createBooking = asyncHandler(async (req: Request | any, res) => {
     !contact ||
     !email ||
     !adultCount ||
-    !tourDate
+    !tourDate ||
+    !note
   ) {
     res.status(400);
     throw new Error("Please fill in all required input");
