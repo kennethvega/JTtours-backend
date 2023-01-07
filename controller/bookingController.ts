@@ -18,7 +18,7 @@ export const createBooking = asyncHandler(async (req: Request | any, res) => {
   // validation
   if (!customerName || !tourDate || !contact || !email || !adultCount) {
     res.status(400);
-    throw new Error("Please fill in all fields");
+    throw new Error("Please fill in all fields---");
   }
   // create booking
   const booking = await Booking.create({
