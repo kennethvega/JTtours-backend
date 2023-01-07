@@ -17,12 +17,11 @@ export const createBooking = asyncHandler(async (req: Request | any, res) => {
   } = req.body;
   // validation
   if (
-    !packageName ||
     !customerName ||
+    !tourDate ||
     !contact ||
     !email ||
     !adultCount ||
-    !tourDate ||
     !note
   ) {
     res.status(400);
