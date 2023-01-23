@@ -25,6 +25,7 @@ app.use(body_parser_1.default.json()); //-->converts/parse data to object
 app.use(cors({
     origin: [
         "https://jt-toursandtravels-admin.web.app",
+        "https://jt-toursandtravels.web.app",
         "http://localhost:5173",
     ],
     credentials: true,
